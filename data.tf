@@ -6,6 +6,49 @@ data "aws_region" "current" {
 data "aws_partition" "current" {}
 
 
+############################
+#IAM Policy document for S3#
+############################
+data "aws_iam_policy_document" "s3-policy" {
+  statement {
+    sid = "AWSCloudTrailAclCheck"
+    effect = "Allow"
+    
+    principals {
+      type = "Service"
+      identifiers = ["cloudtrail.amazonaws.com"]
+    }
+    
+    actions = ["s3:GetBucketAcl"]
+    resources = ["arn:aws:s3:::${var.company-name}-global-cloudtrail-logs"]
+  }
+
+  statement {
+    sid = "AWSCloudTrailWrite"
+    effect = "Allow"
+    
+    principals {
+      type = "Service"
+      identifiers = ["cloudtrail.amazonaws.com"]
+    }
+    
+    actions = ["s3:PutObject"]
+    resources = ["arn:aws:s3:::${var.company-name}-global-cloudtrail-logs/${var.s3-prefix}/AWSLogs/${data.aws_caller_identity.current.account_id}/*"]
+    
+    condition {
+      test = "StringEquals"
+      variable = "s3:x-amz-acl"
+      values = [
+        "bucket-owner-full-control"
+        ]
+    }
+  }
+}
+
+
+
+
+
 ########################################
 #IAM Policy document for CloudTrail KMS#
 ########################################

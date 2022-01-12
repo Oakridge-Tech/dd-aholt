@@ -10,43 +10,19 @@ This code is designed to create:
  - =CloudTrail= logs are stored in an =S3= bucket that has all public access blocked. 
  =S3= bucket access logging is enabled. 
 ```
-## Terraform Versions
 
-Terraform 3.70.0 and newer.
-
-
-## Usage
-
-```hcl
-module "aws_cloudtrail" {
-    source             = "trussworks/cloudtrail/aws"
-    s3_bucket_name     = "my-company-cloudtrail-logs"
-    log_retention_days = 90
-}
-```
-
-## Upgrade Instructions for v2 -> v3
-
-Starting in v3, encryption is not optional and will be on for both logs
-delivered to S3 and Cloudwatch Logs. The KMS key resource created this
-module will be used to encrypt both S3 and Cloudwatch-based logs.
-
-Because of this change, remove the `encrypt_cloudtrail` parameter from
-previous invocations of the module prior to upgrading the version.
-
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 3.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.6 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 3.70.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 3.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 3.70.0 |
 
 ## Modules
 
@@ -92,28 +68,3 @@ No modules.
 | <a name="output_cloudtrail_arn"></a> [cloudtrail\_arn](#output\_cloudtrail\_arn) | CloudTrail ARN |
 | <a name="output_cloudtrail_home_region"></a> [cloudtrail\_home\_region](#output\_cloudtrail\_home\_region) | CloudTrail Home Region |
 | <a name="output_cloudtrail_id"></a> [cloudtrail\_id](#output\_cloudtrail\_id) | CloudTrail ID |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
-
-## Developer Setup
-
-Install dependencies (macOS)
-
-```shell
-brew install pre-commit go terraform terraform-docs
-```
-
-### Testing
-
-[Terratest](https://github.com/gruntwork-io/terratest) is being used for
-automated testing with this module. Tests in the `test` folder can be run
-locally by running the following command:
-
-```text
-make test
-```
-
-Or with aws-vault:
-
-```text
-AWS_VAULT_KEYCHAIN_NAME=<NAME> aws-vault exec <PROFILE> -- make test
-```
