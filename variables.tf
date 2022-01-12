@@ -13,7 +13,7 @@ variable "aws-account" {
 variable "s3-prefix" {
     type = string
     description = "Prefix assigned to bucket object"
-    default = "logs"
+    default = "dd-logs"
 }
 variable "company-name" {
     type = string 

@@ -1,49 +1,18 @@
+#S3 bucket for CloudTrail logs
 resource "aws_s3_bucket" "cloudtrail-bucket" {
   bucket        = "${var.company-name}-global-cloudtrail-logs"
   force_destroy = true
   acl           = "private"
 
+#Logging on S3 bucket enabled but redirected to dedicated S3 log bucket. 
   logging {
     target_bucket = aws_s3_bucket.s3-log-bucket.id
-    target_prefix = "log/"
+    target_prefix = "cloudtrail/"
   }
 
   policy = data.aws_iam_policy_document.s3-policy.json
-  
-  
-#   <<POLICY
-# {
-#     "Version": "2012-10-17",
-#     "Statement": [
-#         {
-#             "Sid": "AWSCloudTrailAclCheck",
-#             "Effect": "Allow",
-#             "Principal": {
-#               "Service": "cloudtrail.amazonaws.com"
-#             },
-#             "Action": "s3:GetBucketAcl",
-#             "Resource": "arn:aws:s3:::${var.company-name}-global-cloudtrail-logs"
-#         },
-#         {
-#             "Sid": "AWSCloudTrailWrite",
-#             "Effect": "Allow",
-#             "Principal": {
-#               "Service": "cloudtrail.amazonaws.com"
-#             },
-#             "Action": "s3:PutObject",
-#             "Resource": "arn:aws:s3:::${var.company-name}-global-cloudtrail-logs/${var.s3-prefix}/AWSLogs/${data.aws_caller_identity.current.account_id}/*",
-#             "Condition": {
-#                 "StringEquals": {
-#                     "s3:x-amz-acl": "bucket-owner-full-control"
-#                 }
-#             }
-#         }
-#     ]
-# }
-# POLICY
 }
-
-
+#Code to block all public access on CloudTrail log bucket
 resource "aws_s3_bucket_public_access_block" "cloudtrail-bucket-block-access" {
   bucket = aws_s3_bucket.cloudtrail-bucket.id
 
@@ -52,16 +21,13 @@ resource "aws_s3_bucket_public_access_block" "cloudtrail-bucket-block-access" {
   ignore_public_acls      = true
   restrict_public_buckets = true
 }
-
-
-
+#General log bucket 
 resource "aws_s3_bucket" "s3-log-bucket" {
   bucket        = "${var.company-name}-s3-log-bucket"
   force_destroy = true
   acl           = "private"
 }
-
-
+#Code to block all public access on S3 log bucket
 resource "aws_s3_bucket_public_access_block" "s3-log-bucket-block-access" {
   bucket = aws_s3_bucket.s3-log-bucket.id
 
