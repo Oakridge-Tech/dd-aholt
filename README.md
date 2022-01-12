@@ -9,7 +9,7 @@ This code is designed to create:
  - =CloudTrail= logs are encrypted at rest using =KMS= customer managed CMK's. 
  - =CloudTrail= logs are stored in an =S3= bucket that has all public access blocked. 
  =S3= bucket access logging is enabled. 
-
+```
 ## Terraform Versions
 
 Terraform 3.70.0 and newer.
