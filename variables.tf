@@ -47,3 +47,10 @@ variable "iam-role-name" {
     description = "Name for CloudTrail IAM Role to send logs to CloudWatch"
     default     = "cloudtrail-cloudwatch-logs-role"
 }
+
+
+variable "unauthorized_api_calls" {
+  description = "Toggle unauthorized api calls alarm"
+  type        = bool
+  default     = true
+}
