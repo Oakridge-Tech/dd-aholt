@@ -2,14 +2,14 @@
 # Enabling CloudTrail and Alerting 
 
 This code is designed to create: 
-```text
+
  `CloudTrail` enabled in all regions
  `CloudTrail` log file validation is enabled
  Both management and global events are captured with `CloudTrail`
  `CloudTrail` logs are encrypted at rest using =KMS= customer managed CMK's. 
  `CloudTrail` logs are stored in an `S3` bucket that has all public access blocked. 
  `S3` bucket access logging is enabled. 
-```
+
 
 ## Requirements
 
