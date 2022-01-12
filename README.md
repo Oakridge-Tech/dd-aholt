@@ -2,14 +2,16 @@
 # Enabling CloudTrail and Alerting 
 
 This code is designed to create: 
-
- `CloudTrail` enabled in all regions
- `CloudTrail` log file validation is enabled
- Both management and global events are captured with `CloudTrail`
- `CloudTrail` logs are encrypted at rest using =KMS= customer managed CMK's. 
- `CloudTrail` logs are stored in an `S3` bucket that has all public access blocked. 
- `S3` bucket access logging is enabled. 
-
+```text
+ - CloudTrail enabled in all regions.
+ - CloudTrail log file validation is enabled.
+ - Both management and global events are captured with CloudTrail.
+ - CloudTrail logs are encrypted at rest using KMS customer managed CMK's. 
+ - CloudTrail logs are stored in an S3 bucket that has all public access blocked. 
+ - S3 bucket access logging is enabled. 
+ - CloudTrail trail is configured with CloudWatch Log Group. 
+ - Alerting set up to send email on API calls, console sign in without MFA and usage of the root account. 
+```
 
 ## Requirements
 
