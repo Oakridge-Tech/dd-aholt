@@ -36,6 +36,14 @@ No modules.
 |------|------|
 | [aws_cloudtrail.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudtrail) | resource |
 | [aws_cloudwatch_log_group.cloudtrail](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
+| [aws_cloudwatch_log_metric_filter.console_signin_failures](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_metric_filter) | resource |
+| [aws_cloudwatch_log_metric_filter.no_mfa_console_signin_assumed_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_metric_filter) | resource |
+| [aws_cloudwatch_log_metric_filter.no_mfa_console_signin_no_assumed_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_metric_filter) | resource |
+| [aws_cloudwatch_log_metric_filter.root_usage](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_metric_filter) | resource |
+| [aws_cloudwatch_metric_alarm.console_signin_failures](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
+| [aws_cloudwatch_metric_alarm.no_mfa_console_signin](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
+| [aws_cloudwatch_metric_alarm.root_usage](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
+| [aws_cloudwatch_metric_alarm.unauthorized_api_calls](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
 | [aws_iam_policy.cloudtrail_cloudwatch_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy_attachment.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy_attachment) | resource |
 | [aws_iam_role.cloudtrail_cloudwatch_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
@@ -48,20 +56,32 @@ No modules.
 | [aws_partition.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/partition) | data source |
 | [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
 
+
+
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_cloudwatch_log_group_name"></a> [cloudwatch\_log\_group\_name](#input\_cloudwatch\_log\_group\_name) | The name of the CloudWatch Log Group that receives CloudTrail events. | `string` | `"cloudtrail-events"` | no |
-| <a name="input_enabled"></a> [enabled](#input\_enabled) | Enables logging for the trail. Defaults to true. Setting this to false will pause logging. | `bool` | `true` | no |
-| <a name="input_iam_role_name"></a> [iam\_role\_name](#input\_iam\_role\_name) | Name for the CloudTrail IAM role | `string` | `"cloudtrail-cloudwatch-logs-role"` | no |
-| <a name="input_key_deletion_window_in_days"></a> [key\_deletion\_window\_in\_days](#input\_key\_deletion\_window\_in\_days) | Duration in days after which the key is deleted after destruction of the resource, must be 7-30 days.  Default 30 days. | `string` | `30` | no |
-| <a name="input_log_retention_days"></a> [log\_retention\_days](#input\_log\_retention\_days) | Number of days to keep AWS logs around in specific log group. | `string` | `90` | no |
-| <a name="input_org_trail"></a> [org\_trail](#input\_org\_trail) | Whether or not this is an organization trail. Only valid in master account. | `string` | `"false"` | no |
-| <a name="input_s3_bucket_name"></a> [s3\_bucket\_name](#input\_s3\_bucket\_name) | The name of the AWS S3 bucket. | `string` | n/a | yes |
-| <a name="input_s3_key_prefix"></a> [s3\_key\_prefix](#input\_s3\_key\_prefix) | S3 key prefix for CloudTrail logs | `string` | `"cloudtrail"` | no |
-| <a name="input_tags"></a> [tags](#input\_tags) | A mapping of tags to CloudTrail resources. | `map(string)` | <pre>{<br>  "Automation": "Terraform"<br>}</pre> | no |
-| <a name="input_trail_name"></a> [trail\_name](#input\_trail\_name) | Name for the Cloudtrail | `string` | `"cloudtrail"` | no |
+| <a name="company-name"></a> [alarm\_namespace](company\-name) | Name of company - Generic use for unique naing conventions | `string` | `"dd"` | yes |
+| <a name="input_alarm_sns_topic_arn"></a> [alarm\_sns\_topic\_arn](#input\_alarm\_sns\_topic\_arn) | SNS topic ARN for generated alarms | `string` | n/a | yes |
+| <a name="input_aws_config_changes"></a> [aws\_config\_changes](#input\_aws\_config\_changes) | Toggle AWS Config changes alarm | `bool` | `true` | no |
+| <a name="input_cloudtrail_cfg_changes"></a> [cloudtrail\_cfg\_changes](#input\_cloudtrail\_cfg\_changes) | Toggle Cloudtrail config changes alarm | `bool` | `true` | no |
+| <a name="input_cloudtrail_log_group_name"></a> [cloudtrail\_log\_group\_name](#input\_cloudtrail\_log\_group\_name) | Cloudwatch log group name for Cloudtrail logs | `string` | `"cloudtrail-events"` | no |
+| <a name="input_console_signin_failures"></a> [console\_signin\_failures](#input\_console\_signin\_failures) | Toggle console signin failures alarm | `bool` | `true` | no |
+| <a name="input_disable_assumed_role_login_alerts"></a> [disable\_assumed\_role\_login\_alerts](#input\_disable\_assumed\_role\_login\_alerts) | Toggle to disable assumed role console login alerts - violates CIS Benchmark | `bool` | `false` | no |
+| <a name="input_disable_or_delete_cmk"></a> [disable\_or\_delete\_cmk](#input\_disable\_or\_delete\_cmk) | Toggle disable or delete CMK alarm | `bool` | `true` | no |
+| <a name="input_iam_changes"></a> [iam\_changes](#input\_iam\_changes) | Toggle IAM changes alarm | `bool` | `true` | no |
+| <a name="input_nacl_changes"></a> [nacl\_changes](#input\_nacl\_changes) | Toggle network ACL changes alarm | `bool` | `true` | no |
+| <a name="input_network_gw_changes"></a> [network\_gw\_changes](#input\_network\_gw\_changes) | Toggle network gateway changes alarm | `bool` | `true` | no |
+| <a name="input_no_mfa_console_login"></a> [no\_mfa\_console\_login](#input\_no\_mfa\_console\_login) | Toggle no MFA console login alarm | `bool` | `true` | no |
+| <a name="input_root_usage"></a> [root\_usage](#input\_root\_usage) | Toggle root usage alarm | `bool` | `true` | no |
+| <a name="input_route_table_changes"></a> [route\_table\_changes](#input\_route\_table\_changes) | Toggle route table changes alarm | `bool` | `true` | no |
+| <a name="input_s3_bucket_policy_changes"></a> [s3\_bucket\_policy\_changes](#input\_s3\_bucket\_policy\_changes) | Toggle S3 bucket policy changes alarm | `bool` | `true` | no |
+| <a name="input_security_group_changes"></a> [security\_group\_changes](#input\_security\_group\_changes) | Toggle security group changes alarm | `bool` | `true` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | Tags for resources created | `map(string)` | `{}` | no |
+| <a name="input_unauthorized_api_calls"></a> [unauthorized\_api\_calls](#input\_unauthorized\_api\_calls) | Toggle unauthorized api calls alarm | `bool` | `true` | no |
+| <a name="input_vpc_changes"></a> [vpc\_changes](#input\_vpc\_changes) | Toggle VPC changes alarm | `bool` | `true` | no |
 
 ## Outputs
 

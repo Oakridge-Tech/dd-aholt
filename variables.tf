@@ -1,19 +1,3 @@
-###################
-#General variables#
-###################
-
-variable "aws-account" {
-    type = number 
-    description = "Account number of aws account"
-    default = 083118431604
-}
-
-variable "region" {
-    type = string
-    description = "Default region"
-    default = "eu-west-2"
-}
-
 #################
 #S3.tf Variables#
 #################
