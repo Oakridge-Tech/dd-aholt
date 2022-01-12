@@ -2,6 +2,7 @@ data "aws_caller_identity" "current" {
 }
 data "aws_region" "current" {
 }
+#aws_partition block in case of GovCloud or China partition
 data "aws_partition" "current" {}
 
 

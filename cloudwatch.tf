@@ -10,7 +10,7 @@ resource "aws_cloudwatch_log_group" "cloudtrail" {
 # Event alarm for unauthorised API calls#
 #########################################
 resource "aws_cloudwatch_log_metric_filter" "unauthorized-api-calls" {
-  count = var.unauthorized-api-calls ? 1 : 0  #need to understand this
+  count = var.unauthorized-api-calls ? 1 : 0 
 
   name           = "UnauthorizedAPICalls"
   pattern        = "{ ($.errorCode = \"*UnauthorizedOperation\") || ($.errorCode = \"AccessDenied*\") }"
