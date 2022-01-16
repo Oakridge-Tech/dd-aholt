@@ -11,36 +11,36 @@ data "aws_partition" "current" {}
 ############################
 data "aws_iam_policy_document" "s3-policy" {
   statement {
-    sid = "AWSCloudTrailAclCheck"
+    sid    = "AWSCloudTrailAclCheck"
     effect = "Allow"
-    
+
     principals {
-      type = "Service"
+      type        = "Service"
       identifiers = ["cloudtrail.amazonaws.com"]
     }
-    
-    actions = ["s3:GetBucketAcl"]
+
+    actions   = ["s3:GetBucketAcl"]
     resources = ["arn:aws:s3:::${var.company-name}-global-cloudtrail-logs"]
   }
 
   statement {
-    sid = "AWSCloudTrailWrite"
+    sid    = "AWSCloudTrailWrite"
     effect = "Allow"
-    
+
     principals {
-      type = "Service"
+      type        = "Service"
       identifiers = ["cloudtrail.amazonaws.com"]
     }
-    
-    actions = ["s3:PutObject"]
+
+    actions   = ["s3:PutObject"]
     resources = ["arn:aws:s3:::${var.company-name}-global-cloudtrail-logs/${var.s3-prefix}/AWSLogs/${data.aws_caller_identity.current.account_id}/*"]
-    
+
     condition {
-      test = "StringEquals"
+      test     = "StringEquals"
       variable = "s3:x-amz-acl"
       values = [
         "bucket-owner-full-control"
-        ]
+      ]
     }
   }
 }
@@ -231,5 +231,14 @@ data "aws_iam_policy_document" "cloudtrail-cloudwatch-logs" {
     ]
 
     resources = ["arn:${data.aws_partition.current.partition}:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:${var.cloudwatch-log-group}:*"]
+  }
+}
+
+
+locals {
+  default_tags = {
+    environment   = var.environment
+    business-unit = var.business-unit
+    iac           = "terraform"
   }
 }

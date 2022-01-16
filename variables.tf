@@ -1,33 +1,42 @@
+###################
+#General Variables#
+###################
+variable "environment" {
+  type        = string
+  description = "Environment service is located"
+  default     = "prod"
+}
+
 #################
 #S3.tf Variables#
 #################
 variable "company-name" {
-    type = string 
-    description = "Name of company"
-    default = "dd"
+  type        = string
+  description = "Name of company"
+  default     = "dd"
 }
 
 #########################
 #CloudTrail.tf Variables#
 #########################
 variable "s3-prefix" {
-    type = string
-    description = "Prefix assigned to bucket object"
-    default = "dd-logs"
+  type        = string
+  description = "Prefix assigned to bucket object"
+  default     = "dd-logs"
 }
 variable "cloudtrail-name" {
-    type        = string
-    description = "Name for the Cloudtrail"
-    default     = "global-cloudtrail-audit"
+  type        = string
+  description = "Name for the Cloudtrail"
+  default     = "global-cloudtrail-audit"
 }
 
 #########################
 #CloudWatch.tf Variables#
 #########################
 variable "cloudwatch-log-group" {
-    type = string
-    description = "CloudWatch log group name from ClouTrail"
-    default = "cloudtrail-events"
+  type        = string
+  description = "CloudWatch log group name from ClouTrail"
+  default     = "cloudtrail-events"
 }
 variable "unauthorized-api-calls" {
   description = "Toggle unauthorized api calls alarm"
@@ -39,9 +48,17 @@ variable "unauthorized-api-calls" {
 #IAM.tf Variables#
 ##################
 variable "iam-role-name" {
-    type        = string
-    description = "Name for CloudTrail IAM Role to send logs to CloudWatch"
-    default     = "cloudtrail-cloudwatch-logs-role"
+  type        = string
+  description = "Name for CloudTrail IAM Role to send logs to CloudWatch"
+  default     = "cloudtrail-cloudwatch-logs-role"
 }
 
 
+######
+#Tags#
+######
+variable "business-unit" {
+  type        = string
+  description = "Business unit tag to assign cost"
+  default     = "finance"
+}

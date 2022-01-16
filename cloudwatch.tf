@@ -4,13 +4,21 @@ resource "aws_cloudwatch_log_group" "cloudtrail" {
   name              = var.cloudwatch-log-group
   retention_in_days = 1 #Retention set to 1 day for testing. Should be set to 0 days for go live. 
   kms_key_id        = aws_kms_key.cloudtrail-kms.arn
+
+  tags = merge(
+    local.default_tags,
+    {
+      project     = "dd-test-questions"
+      application = "business-app"
+    }
+  )
 }
 
 #########################################
 # Event alarm for unauthorised API calls#
 #########################################
 resource "aws_cloudwatch_log_metric_filter" "unauthorized-api-calls" {
-  count = var.unauthorized-api-calls ? 1 : 0 
+  count = var.unauthorized-api-calls ? 1 : 0
 
   name           = "UnauthorizedAPICalls"
   pattern        = "{ ($.errorCode = \"*UnauthorizedOperation\") || ($.errorCode = \"AccessDenied*\") }"
