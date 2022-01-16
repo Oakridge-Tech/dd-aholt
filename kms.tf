@@ -4,6 +4,14 @@ resource "aws_kms_key" "cloudtrail-kms" {
   deletion_window_in_days = 7
   enable_key_rotation     = "true"
   policy                  = data.aws_iam_policy_document.cloudtrail-kms-policy.json
+
+  tags = merge(
+    local.default_tags,
+    {
+      project     = "dd-test-questions"
+      application = "kms"
+    }
+  )
 }
 #Alias for CloudTrail KMS key
 resource "aws_kms_alias" "cloudtrail" {
