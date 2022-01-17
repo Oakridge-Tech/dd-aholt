@@ -54,9 +54,9 @@ variable "iam-role-name" {
 }
 
 
-######
-#Tags#
-######
+###############
+#Tag Variables#
+###############
 variable "business-unit" {
   type        = string
   description = "Business unit tag to assign cost"

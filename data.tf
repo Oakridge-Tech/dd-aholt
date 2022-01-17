@@ -235,6 +235,10 @@ data "aws_iam_policy_document" "cloudtrail-cloudwatch-logs" {
 }
 
 
+##############
+#Default Tags# Added in after submission 
+##############
+
 locals {
   default_tags = {
     environment   = var.environment
